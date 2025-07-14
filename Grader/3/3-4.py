@@ -53,5 +53,3 @@ def main():
    
 	print(f"Output: {res}")
 main()
-
-#check input => push stack

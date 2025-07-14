@@ -58,6 +58,7 @@ def count_visible_trees(tree_stack):
     # restore original stack
     while not temp.is_empty():
         tree_stack.push(temp.pop())
+
     return cnt
 
 def main():

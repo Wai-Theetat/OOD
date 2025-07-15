@@ -56,7 +56,7 @@ class LinkedList:
             self.__tail = new_node
         self.__size += 1
 
-    def insert_any(self, value, index):
+    def insert_any_after(self, value, index):
         if index < 0 or index > self.__size:
             raise IndexError("Out of bounds")
         if index == 0:

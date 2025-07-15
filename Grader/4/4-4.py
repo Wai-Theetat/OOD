@@ -91,12 +91,12 @@ def main():
 		si, pi = log.split(',')
 		all_customers.append(Customer(i + 1, si, pi))
 	
-	queue = Queue()
-	baristas = [Barista(), Barista()]
-	time = 0
-	result = []	
-	waiting = []		#customer who have to wait til he can order
-	done = []
+	queue 		= Queue()
+	baristas 	= [Barista(), Barista()]
+	time 		= 0
+	result 		= []	
+	waiting 	= []		#customer who have to wait til he can order
+	done 		= []
  
 	while len(done) < len(all_customers):
 		

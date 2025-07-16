@@ -99,7 +99,6 @@ def main():
 	done 		= []
  
 	while len(done) < len(all_customers):
-		
 		#When on customer time
 		for person in all_customers:
 			if person.si == time:

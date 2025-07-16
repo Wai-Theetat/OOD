@@ -75,13 +75,38 @@ def think_mirror(mirror_str, item_queue):
 	result = mirror_stack.copy_to_list()
 	return result, exploded
 
-def think_normal(normal_str, item_queue):
+def think_normal(normal_str, item_queue : Queue):
 	normal_stack = Stack()
 	exploded = 0
 	failed_interrupt = 0
-	i = 0
 
-	return normal_stack, exploded, failed_interrupt
+	for c in normal_str:
+		normal_stack.push(c)
+		
+		while normal_stack.size() >= 3:
+			temp = normal_stack.copy_to_list()
+			
+			if temp[-1] == temp[-2] == temp[-3]:
+				if not item_queue.is_empty():
+					last = normal_stack.pop()
+					item = item_queue.dequeue()
+					temp[-1] = item
+					normal_stack.push(item)
+					if  temp[-1] == temp[-2] == temp[-3]:
+						for _ in range(3):
+							normal_stack.pop()
+						failed_interrupt += 1
+					normal_stack.push(last)
+     
+				else:
+					exploded += 1
+					for _ in range(3):
+							normal_stack.pop()
+			else:
+				break
+			
+	res = normal_stack.copy_to_list()
+	return res, exploded, failed_interrupt
 
 
 def main():
@@ -93,7 +118,33 @@ def main():
 
 	normal_result, normal_exploded, failed_interrupt = think_normal(normal_str, item_queue)
 	
-	print(f"mirror_result = {mirror_result}, explode = {mirror_exploded}, item = {item_queue}")
-	print(f"normal_result = {normal_result}, explode = {normal_exploded}, item = {item_queue}")
+	#print(f"mirror_result = {mirror_result}, explode = {mirror_exploded}, item = {item_queue}")
+	#print(f"normal_result = {normal_result}, explode = {normal_exploded}, item = {item_queue}, failed = {failed_interrupt}")
+    
+	print("NORMAL :")
+
+	if len(normal_result) == 0:
+		print("0\nEmpty")
+	else:
+		print(f"{len(normal_result)}")
+		print(f"{''.join(normal_result[::-1])}")
+  
+	print(f"{normal_exploded} Explosive(s) ! ! ! (NORMAL)")
+
+	if failed_interrupt > 0:
+		print(f"Failed Interrupted {failed_interrupt} Bomb(s)")
+
+	print("------------MIRROR------------")
+
+	print(": RORRIM")
+ 
+	if len(mirror_result) == 0:
+		print("0\nytpmE")
+	else:
+		print(f"{len(mirror_result)}")
+		print(f"{''.join(mirror_result[::-1])}")
+  
+	print(f"(RORRIM) ! ! ! (s)evisolpxE {mirror_exploded}")
+	
     
 main()

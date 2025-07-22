@@ -1,3 +1,4 @@
-# OOD
+OOD (Object Oriented Data Structue)
 
-:D
+	- Structure format & Example
+	- Grader Work

@@ -39,7 +39,7 @@ def main():
 	
 	while i < n_len :
 		if not stack.is_empty() and nums[i] > stack.peek() :
-      
+ 
 			print(f"input[{i}]({nums[i]}) is greater than input[top of stack]({stack.peek()})")
 			print("Stack pop")
 			

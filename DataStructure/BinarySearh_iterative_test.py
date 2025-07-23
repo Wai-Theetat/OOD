@@ -31,6 +31,13 @@ class LinkedList:
 		self.__tail = None
 		self.__size = 0
 
+	@property
+	def size(self):
+		return self.__size
+
+	def __len__(self):
+		return self.__size
+
 	def is_empty(self):
 		return self.__head is None
 
@@ -42,8 +49,10 @@ class LinkedList:
 			self.__head.prev = new_node
 		else:
 			self.__tail = new_node
+
 		self.__head = new_node
 		self.__size += 1
+		return new_node
 
 	def insert_end(self, value):
 		new_node = Node(value)
@@ -54,17 +63,17 @@ class LinkedList:
 			self.__tail.next = new_node
 			new_node.prev = self.__tail
 			self.__tail = new_node
-		self.__size += 1
 
-	def insert_any(self, value, index):
+		self.__size += 1
+		return new_node
+
+	def insert_at(self, value, index):
 		if index < 0 or index > self.__size:
-			raise IndexError("Out of bounds")
+			raise IndexError("Index out of bounds")
 		if index == 0:
-			self.insert_start(value)
-			return
+			return self.insert_start(value)
 		if index == self.__size:
-			self.insert_end(value)
-			return
+			return self.insert_end(value)
 
 		new_node = Node(value)
 		mid = self.__size // 2
@@ -85,6 +94,7 @@ class LinkedList:
 		current.next = new_node
 
 		self.__size += 1
+		return new_node
 
 	def remove(self, index):
 		if self.is_empty():
@@ -122,6 +132,7 @@ class LinkedList:
 		else:
 			self.__head = self.__head.next
 			self.__head.prev = None
+
 		self.__size -= 1
 		return removed_value
 
@@ -135,22 +146,27 @@ class LinkedList:
 		else:
 			self.__tail = self.__tail.prev
 			self.__tail.next = None
+
 		self.__size -= 1
 		return removed_value
 
-	def print_head_to_tail(self):
+	def find(self, value):
+		current = self.__head
+		index = 0
+		while current:
+			if current.value == value:
+				return index
+			current = current.next
+			index += 1
+		return -1
+
+	def __str__(self):
+		values = []
 		current = self.__head
 		while current:
-			print(current.value, end=", ")
+			values.append(str(current.value))
 			current = current.next
-		print("None")
-
-	def print_tail_to_head(self):
-		current = self.__tail
-		while current:
-			print(current.value, end=", ")
-			current = current.prev
-		print("None")
+		return " <-> ".join(values) + " -> None" if values else "Empty list"
 
 
 def main():
@@ -160,23 +176,25 @@ def main():
 	dll.insert_end(30)
 	dll.insert_start(5)
 
-	print("Forward:")
-	dll.print_head_to_tail()
+	print("Forward:", dll)
+	print("Size:", dll.size)
 
-	print("Backward:")
-	dll.print_tail_to_head()
-
-	print("\nInsert text at index 2:")
-	dll.insert_any("This is Txet", 2)
-	dll.print_head_to_tail()
+	print("\nInsert 'Middle' at index 2")
+	dll.insert_at("Middle", 2)
+	print(dll)
 
 	print("\nRemoved head:", dll.remove_head())
-	dll.print_head_to_tail()
+	print(dll)
 
 	print("\nRemoved tail:", dll.remove_tail())
-	dll.print_head_to_tail()
+	print(dll)
 
-	print("\nRemoved at index 1:", dll.remove(1))
-	dll.print_head_to_tail()
+	print("\nRemoved index 1:", dll.remove(1))
+	print(dll)
+
+	print("\nFind index of 20:", dll.find(20))
+	print("Find index of 999:", dll.find(999))
+	print("Length with len():", len(dll))
+
 
 main()

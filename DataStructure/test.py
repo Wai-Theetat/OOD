@@ -56,7 +56,6 @@ class Stack:
     def __str__(self):
         return str(self.__items)
 
-    
 def is_groupable(group: Queue, student: str) -> bool:
 	
 	if (student == "Green" and group.contains("Pink") and not group.contains("Blue")):

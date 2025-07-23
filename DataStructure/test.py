@@ -1,97 +1,139 @@
-class Stack:
-    def __init__(self, list = None):
-        if list == None:
-            self.__items = []
-        else:
-            self.__items = list
-        self.__size = len(self.__items)
-        self.__poisoned = False
+class Queue:
+    def __init__(self):
+        self.__items = []
 
-    def push(self,data):
-        self.__items.append(data)
-        self.__size += 1
-        return
-    
-    def getSize(self):
-        return self.__size
-    
+    def is_empty(self):
+        return len(self.__items) == 0
+
+    def enqueue(self, item):
+        self.__items.append(item)
+
+    def dequeue(self):
+        if self.is_empty():
+            raise IndexError("dequeue from empty queue")
+        return self.__items.pop(0)
+
+    def peek(self):
+        if self.is_empty():
+            raise IndexError("peek from empty queue")
+        return self.__items[0]
+
+    def size(self):
+        return len(self.__items)
+
+    def __str__(self):
+        return str(self.__items)
+
+    def contains(self, value):
+        for item in self.__items:
+            if item == value:
+                return True
+        return False
+
+class Stack:
+    def __init__(self):
+        self.__items = []
+ 
+    def push(self, item):
+        self.__items.append(item)
+
     def pop(self):
-        self.__size -= 1
+        if self.is_empty():
+            raise IndexError("pop from empty stack")
         return self.__items.pop()
-    
-    def peek(self): #ใช้ดู top of stack
+
+    def peek(self):
+        if self.is_empty():
+            return None
         return self.__items[-1]
 
-    def isEmpty(self):
-        return self.__items == []
-    
-    def Base(self):
-        for i in range(self.__size):
-            self.__items[i] = -1
-    
-    def getPoison(self):
-        self.__poisoned = True
-        return
-    
-    def getPoisonlist(self):
-        poisonlist = list(map(int, self.__items.copy()))
-        length = len(poisonlist)
-        i = 0
-        while i < length:
-            if poisonlist[i] % 2 == 0:
-                poisonlist[i] -= 1
-            else:
-                poisonlist[i] += 2
-            if poisonlist[i] < 1 : poisonlist[i] = 1
-            i += 1
-        return list(map(str, poisonlist))
+    def is_empty(self):
+        return len(self.__items) == 0
 
-    def observe(self):
-        count = 0
-        list1 = Stack()
-        if self.__poisoned:
-            for i in self.getPoisonlist():
-                if list1.isEmpty(): 
-                    list1.push(i)
-                    continue
-                while not list1.isEmpty() and list1.peek() <= i:
-                    list1.pop()
-                list1.push(i)
-        else:
-            for i in self.__items:
-                if list1.isEmpty(): 
-                    list1.push(i)
-                    continue
-                while not list1.isEmpty() and list1.peek() <= i:
-                    list1.pop()
-                list1.push(i)
-        count = list1.getSize()
-        self.__poisoned = False
-        return count          
-    
+    def size(self):
+        return len(self.__items)
+
     def __str__(self):
-        return f"list is {self.__items}"\
-        
-def process(data, stack):
+        return str(self.__items)
+
     
-    for i in data:
-        action = i.split()
-        if action[0] == "A":
-            height = action[1]
-            if height < "1":
-                height = "1"
-            stack.push(height)
-            
-        elif action[0] == "B":
-            print(stack.observe())
-            
-        elif action[0] == "S":
-            stack.getPoison()
+def is_groupable(group: Queue, student: str) -> bool:
+	
+	if (student == "Green" and group.contains("Pink") and not group.contains("Blue")):
+		return False
+	
+	if (student == "Pink" and group.contains("Green") and not group.contains("Blue")):
+		return False
+
+	if (student == "Blue" and group.contains("Yellow") and not group.contains("Red")):
+		return False
+	
+	if (student == "Yellow" and group.contains("Blue") and not group.contains("Red")):
+		return False
+
+	return True
 
 def main():
-    res = input("Enter Input : ").split(",")
-    tree = Stack()
-    process(res, tree)
-    return
+    
+	maxmem, raw_students = input("***Make a group***\nEnter input : ").split(',')
+	
+	maxmem		= int(maxmem)
+	rejected	= Queue()
+	students	= Queue()
+	groups		= Stack()
+
+	for tmp in raw_students.split():
+		students.enqueue(tmp)
+	
+	current_group = Queue()
+ 
+	while not students.is_empty():
+		student = students.dequeue()
+		
+		if current_group.size() >= maxmem:
+			groups.push(current_group)
+			current_group = Queue()
+		
+		if is_groupable(current_group, student):
+			current_group.enqueue(student)
+		else:
+			rejected.enqueue(student)
+
+	#print(f"{current_group.size()} and {maxmem}")
+
+	if current_group.size() != maxmem:
+		while not current_group.is_empty():
+			rejected.enqueue(current_group.dequeue())
+	else:
+		while not current_group.is_empty():
+			groups.push(current_group)
+			current_group.dequeue()
+      
+	# Print groups
+	print_result = Stack()
+
+	# Reverse the group order back using a second stack
+	while not groups.is_empty():
+		print_result.push(groups.pop())
+
+	group_number = 1
+	while not print_result.is_empty():
+		group : Queue = print_result.pop()
+  
+		print(f"Group {group_number} : ",end='')
+		while not group.is_empty():
+			print(group.dequeue(), end='')
+			print(', ', end='') if not group.is_empty() else print('', end='\n')
+  
+		group_number += 1
+
+	# Print rejected
+	if rejected.is_empty():
+		print("Rejected : None")
+	else:
+		print("Rejected : ", end='')
+		while not rejected.is_empty():
+			print(rejected.dequeue(), end='')
+			print(', ', end='') if not rejected.is_empty() else print('', end='')
 
 main()

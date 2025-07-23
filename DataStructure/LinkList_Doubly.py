@@ -168,6 +168,42 @@ class LinkedList:
 			current = current.next
 		return " <-> ".join(values) + " -> None" if values else "Empty list"
 
+	def __getitem__(self, index):
+		if index < 0:
+			index += self.__size
+		if index < 0 or index >= self.__size:
+			raise IndexError("Index out of bounds")
+
+		mid = self.__size // 2
+		if index <= mid:
+			current = self.__head
+			for _ in range(index):
+				current = current.next
+		else:
+			current = self.__tail
+			for _ in range(self.__size - index - 1):
+				current = current.prev
+
+		return current.value
+
+	def __setitem__(self, index, value):
+		if index < 0:
+			index += self.__size
+		if index < 0 or index >= self.__size:
+			raise IndexError("Index out of bounds")
+
+		mid = self.__size // 2
+		if index <= mid:
+			current = self.__head
+			for _ in range(index):
+				current = current.next
+		else:
+			current = self.__tail
+			for _ in range(self.__size - index - 1):
+				current = current.prev
+
+		current._Node__value = value 
+
 
 def main():
 	dll = LinkedList()

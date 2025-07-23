@@ -73,7 +73,6 @@ def is_groupable(group: Queue, student: str) -> bool:
 	return True
 
 def main():
-    
 	maxmem, raw_students = input("***Make a group***\nEnter input : ").split(',')
 	
 	maxmem		= int(maxmem)

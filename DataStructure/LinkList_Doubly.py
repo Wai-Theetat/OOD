@@ -8,6 +8,10 @@ class Node:
 	def value(self):
 		return self.__value
 
+	@value.setter
+	def value(self, new_value):
+		self.__value = new_value
+
 	@property
 	def next(self):
 		return self.__next
@@ -24,7 +28,6 @@ class Node:
 	def prev(self, node):
 		self.__prev = node
 
-
 class LinkedList:
 	def __init__(self):
 		self.__head = None
@@ -35,13 +38,10 @@ class LinkedList:
 	def size(self):
 		return self.__size
 
-	def __len__(self):
-		return self.__size
-
 	def is_empty(self):
 		return self.__head is None
 
-	def insert_start(self, value):
+	def add_new_head(self, value):
 		new_node = Node(value)
 		new_node.next = self.__head
 
@@ -54,7 +54,7 @@ class LinkedList:
 		self.__size += 1
 		return new_node
 
-	def insert_end(self, value):
+	def append(self, value):
 		new_node = Node(value)
 
 		if self.is_empty():
@@ -67,13 +67,13 @@ class LinkedList:
 		self.__size += 1
 		return new_node
 
-	def insert_at(self, value, index):
+	def insert(self, value, index):
 		if index < 0 or index > self.__size:
 			raise IndexError("Index out of bounds")
 		if index == 0:
-			return self.insert_start(value)
+			return self.prepend(value)
 		if index == self.__size:
-			return self.insert_end(value)
+			return self.append(value)
 
 		new_node = Node(value)
 		mid = self.__size // 2
@@ -96,16 +96,16 @@ class LinkedList:
 		self.__size += 1
 		return new_node
 
-	def remove(self, index):
+	def delete(self, index):
 		if self.is_empty():
 			raise IndexError("Remove from empty list")
 		if index < 0 or index >= self.__size:
 			raise IndexError("Index out of bounds")
 
 		if index == 0:
-			return self.remove_head()
+			return self.delete_head()
 		if index == self.__size - 1:
-			return self.remove_tail()
+			return self.delete_tail()
 
 		mid = self.__size // 2
 		if index <= mid:
@@ -122,7 +122,7 @@ class LinkedList:
 		self.__size -= 1
 		return current.value
 
-	def remove_head(self):
+	def delete_head(self):
 		if self.is_empty():
 			raise IndexError("Remove from empty list")
 
@@ -136,7 +136,7 @@ class LinkedList:
 		self.__size -= 1
 		return removed_value
 
-	def remove_tail(self):
+	def delete_tail(self): 
 		if self.is_empty():
 			raise IndexError("Remove from empty list")
 
@@ -150,7 +150,7 @@ class LinkedList:
 		self.__size -= 1
 		return removed_value
 
-	def find(self, value):
+	def index_of(self, value):
 		current = self.__head
 		index = 0
 		while current:
@@ -202,35 +202,9 @@ class LinkedList:
 			for _ in range(self.__size - index - 1):
 				current = current.prev
 
-		current._Node__value = value 
-
-
-def main():
-	dll = LinkedList()
-	dll.insert_start(10)
-	dll.insert_end(20)
-	dll.insert_end(30)
-	dll.insert_start(5)
-
-	print("Forward:", dll)
-	print("Size:", dll.size)
-
-	print("\nInsert 'Middle' at index 2")
-	dll.insert_at("Middle", 2)
-	print(dll)
-
-	print("\nRemoved head:", dll.remove_head())
-	print(dll)
-
-	print("\nRemoved tail:", dll.remove_tail())
-	print(dll)
-
-	print("\nRemoved index 1:", dll.remove(1))
-	print(dll)
-
-	print("\nFind index of 20:", dll.find(20))
-	print("Find index of 999:", dll.find(999))
-	print("Length with len():", len(dll))
-
-
-main()
+		current.value = value
+  
+	#clear all item of linked-list
+	def clear(self):
+		self.__head = self.__tail = None
+		self.__size = 0

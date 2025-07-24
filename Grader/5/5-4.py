@@ -243,26 +243,26 @@ class Population(LinkedList):
 	def __init__(self, worker, army):
 		super().__init__()
   
-		self.__lastet_W_id = 0
-		self.__lastet_A_id = 0
+		self.__latest_W_id = 0
+		self.__latest_A_id = 0
   
-		self.add(worker, 'W')
-		self.add(army, 'A')
+		self.add_ant(worker, 'W')
+		self.add_ant(army, 'A')
 
 	
-	def add(self, value, ant_type):
+	def add_ant(self, value, ant_type):
 		pass
 
 
 	@property
-	def lastest_W(self): return self.__lastet_W_id
+	def latest_W(self): return self.__latest_W_id
 	@property
-	def lastest_A(self): return self.__lastet_A_id
+	def latest_A(self): return self.__latest_A_id
 
-	@lastest_W.setter
-	def lastest_W(self, val): self.__lastet_W_id = val
-	@lastest_A.setter
-	def lastest_A(self, val): self.__lastet_A_id = val
+	@latest_W.setter
+	def latest_W(self, val): self.__latest_W_id = val
+	@latest_A.setter
+	def latest_A(self, val): self.__latest_A_id = val
  
  
 #หากราชินีโกรธครบ 3 ครั้ง รังมดจะแตกและหยุดทำงานทันที

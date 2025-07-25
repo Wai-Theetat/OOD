@@ -398,7 +398,6 @@ class Colony:
 		if not has_army:
 			self.ant_population.latest_A = 0
 
-
 def main():
 	print("***This colony is our home***")
 	raw_ant_population, raw_commands = input("Enter input : ").split('/')

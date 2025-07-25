@@ -13,6 +13,11 @@ class LinkedList:
 				self.append(item)
 
 	@property
+	def head(self):
+		"""Read-only access to head node (for internal use/testing)"""
+		return self.__head
+
+	@property
 	def size(self):
 		return self.__size
 
@@ -38,7 +43,7 @@ class LinkedList:
 		while current is not None:
 			if current.value == item:
 				if previous is None:
-					self.__head = current.next  # Remove head
+					self.__head = current.next
 				else:
 					previous.next = current.next
 				self.__size -= 1
@@ -72,18 +77,90 @@ class LinkedList:
 		self.__size -= 1
 		return data
 
-	def rt_list(self):
-		values = []
-		current = self.__head
-		while current is not None:
-			values.append(current.value)
-			current = current.next
-		return values
-
 	def print_list(self):
-		values = []
+		traverse = self.head
+		while traverse:
+			print(traverse.value, end = ' → ') if traverse.next != None else print(traverse.value)
+			traverse = traverse.next
+		
+	def print_list_from_to(self, head, tail):
+		traverse = head
+		while traverse:
+			print(traverse.value, end='')
+			if traverse is tail:
+				break
+			print(' → ', end='')
+			traverse = traverse.next
+
+	def __getitem__(self, index):
+		if not 0 <= index < self.__size:
+			raise IndexError("LinkedList index out of range")
+
 		current = self.__head
-		while current is not None:
-			values.append(current.value)
+		for _ in range(index):
 			current = current.next
-		print(values, end = '')
+		return current.value
+
+	def think(self, k):
+		if k <= 1 or not self.__head:
+			self.print_list()
+			return
+		
+		def reverse_k(start : Node, k, prev):
+
+			current = start		#this is not create new node I just pointer it so it's safe
+			cnt 	= 0
+			
+			#in-place reverse Linked-List 
+			while current and cnt < k:
+				nxt = current.next
+				current.next = prev
+				prev = current
+				current = nxt
+				cnt += 1
+			return prev, start, current	#new_head, new_tail, next_groups_start
+
+		tmp	 	= None
+		prev	= None
+		reverse = False
+		current = self.__head
+		
+		self.__head,prev,current = reverse_k(current, k, prev)
+		prev.next = current
+  
+		while current:
+			if reverse:
+				tmp = head
+				head,prev,current = reverse_k(current, k, prev)
+				tmp.next = head
+				prev.next = current
+
+				reverse = False
+
+			else:
+				i = 0
+				prev.next 	= current
+				while current and i < k:
+					prev 	= current
+					current = current.next
+					i		+= 1
+				reverse = True
+				head	= prev
+		self.print_list()
+
+def main():
+    
+	print(" *** Ant Army ***")
+	raw_ant, k = input("Input : ").split(',')
+
+	ants	= LinkedList(raw_ant.split())
+	k		= int(k)
+
+	print(f"Before : ",end='')
+	ants.print_list()
+ 
+	print(f"After : ",end='')
+	ants.think(k)
+
+
+main()

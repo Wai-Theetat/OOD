@@ -13,11 +13,6 @@ class LinkedList:
 				self.append(item)
 
 	@property
-	def head(self):
-		"""Read-only access to head node (for internal use/testing)"""
-		return self.__head
-
-	@property
 	def size(self):
 		return self.__size
 
@@ -43,7 +38,7 @@ class LinkedList:
 		while current is not None:
 			if current.value == item:
 				if previous is None:
-					self.__head = current.next
+					self.__head = current.next  # Remove head
 				else:
 					previous.next = current.next
 				self.__size -= 1
@@ -78,16 +73,17 @@ class LinkedList:
 		return data
 
 	def rt_list(self):
-		return [node for node in self]
+		values = []
+		current = self.__head
+		while current is not None:
+			values.append(current.value)
+			current = current.next
+		return values
 
 	def print_list(self):
-		print(self.rt_list(), end='')
-
-	def __getitem__(self, index):
-		if not 0 <= index < self.__size:
-			raise IndexError("LinkedList index out of range")
-
+		values = []
 		current = self.__head
-		for _ in range(index):
+		while current is not None:
+			values.append(current.value)
 			current = current.next
-		return current.value
+		print(values, end = '')

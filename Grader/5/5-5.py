@@ -13,11 +13,6 @@ class LinkedList:
 				self.append(item)
 
 	@property
-	def head(self):
-		"""Read-only access to head node (for internal use/testing)"""
-		return self.__head
-
-	@property
 	def size(self):
 		return self.__size
 
@@ -78,7 +73,7 @@ class LinkedList:
 		return data
 
 	def print_list(self):
-		traverse = self.head
+		traverse = self.__head
 		while traverse:
 			print(traverse.value, end = ' → ') if traverse.next != None else print(traverse.value)
 			traverse = traverse.next

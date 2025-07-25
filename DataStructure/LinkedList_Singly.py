@@ -77,11 +77,11 @@ class LinkedList:
 		self.__size -= 1
 		return data
 
-	def rt_list(self):
-		return [node for node in self]
-
 	def print_list(self):
-		print(self.rt_list(), end='')
+		traverse = self.head
+		while traverse:
+			print(traverse.value, end = ' → ') if traverse.next != None else print(traverse.value, end='')
+			traverse = traverse.next
 
 	def __getitem__(self, index):
 		if not 0 <= index < self.__size:

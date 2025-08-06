@@ -29,7 +29,7 @@ class BST:
 	def __init__(self, node = None):
 		self.__root = node
 
-
+	
 
 
 

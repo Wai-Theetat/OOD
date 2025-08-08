@@ -17,7 +17,7 @@ def main():
 	# Initialize DP table
 	dp = [{} for _ in range(purity_req + 1)]
 
-	# Base case: purity = 1 → just weight itself (if ≥ 1)
+	# Base case: purity = 1 -> just weight itself (if ≥ 1)
 	for w in range(1, weight_req + 1):
 		dp[1][w] = w
 

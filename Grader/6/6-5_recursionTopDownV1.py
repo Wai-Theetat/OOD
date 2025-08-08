@@ -19,6 +19,7 @@ def think(purity, weight, vc, alchem_table):
 	result = -1
 
 	# Use iteration to avoid recursion limit exceed
+	# pick the first valid answer for time
 	while a <= comb_weight // 2:
 		b = comb_weight - a
 		if a > b:

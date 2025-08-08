@@ -23,9 +23,9 @@ def main():
 
 	# Build up from purity = 2 to purity_req
 	for purity in range(2, purity_req + 1):
-		vc = variation_constants[purity - 1]
+		ck = variation_constants[purity - 1]
 		for weight in range(1, weight_req + 1):
-			comb_weight = 2 * weight - vc + 1
+			comb_weight = 2 * weight - ck + 1
 			best = -1
 			for a, b in get_all_case(comb_weight):
 				left = dp[purity - 1].get(a, -1)

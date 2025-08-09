@@ -35,7 +35,6 @@ def main():
 			if best >= 0:
 				dp[purity][weight] = best
 
-
 	result = dp[purity_req].get(weight_req, -1)
 	if result >= 0:
 		print(f"Total weight of used minerals with Purity 1 : {result}")

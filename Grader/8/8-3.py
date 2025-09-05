@@ -110,18 +110,6 @@ class AVLTree:
 
 class Solution:
 
-	def find_maximum_sum_path(self, root: AVLNode):
-		if root is None:
-			return (0, [])
-
-		left_sum, left_path = self.find_maximum_sum_path(root.get_left())
-		right_sum, right_path = self.find_maximum_sum_path(root.get_right())
-
-		if left_sum > right_sum:
-			return (left_sum + root.get_data(), [root.get_data()] + left_path)
-		else:
-			return (right_sum + root.get_data(), [root.get_data()] + right_path)
-
 	def main(self):
 		apples = list(map(int, input("Enter tree nodes: ").split()))
 
@@ -135,6 +123,17 @@ class Solution:
 		max_sum, path = self.find_maximum_sum_path(tree.get_root())
 		print("Path with maximum sum: " + " + ".join(map(str, path)) + f" = {max_sum}")
 
+	def find_maximum_sum_path(self, root: AVLNode):
+		if root is None:
+			return (0, [])
+
+		left_sum, left_path = self.find_maximum_sum_path(root.get_left())
+		right_sum, right_path = self.find_maximum_sum_path(root.get_right())
+
+		if left_sum > right_sum:
+			return (left_sum + root.get_data(), [root.get_data()] + left_path)
+		else:
+			return (right_sum + root.get_data(), [root.get_data()] + right_path)
 
 sol = Solution()
 sol.main()

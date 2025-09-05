@@ -42,8 +42,10 @@ class AVLTree:
 				node.right = self._remove(node.right, successor.data.title)
 		else:
 			#Traverse
-			node.left  = self._remove(node.left, movieName)
-			node.right = self._remove(node.right, movieName)
+			if node.left:
+				node.left  = self._remove(node.left, movieName)
+			if node.right:
+				node.right = self._remove(node.right, movieName)
 
 		node.setHeight()
 		return self.balance(node)
@@ -77,16 +79,15 @@ class AVLTree:
 			return []
 	
 		result = []
-    
-		if node.left and node.data.rating > start:
-			result += self._getRatingRange(node.left, start, end)
+	
+		#Always Check
+		result += self._getRatingRange(node.left, start, end)
 		
 		if start <= node.data.rating <= end:
 			result.append(node.data)
-		
-		if node.right and node.data.rating < end:
-			result += self._getRatingRange(node.right, start, end)
-		
+
+		result += self._getRatingRange(node.right, start, end)
+
 		return result
 
 

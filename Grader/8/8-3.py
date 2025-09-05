@@ -64,14 +64,14 @@ class AVLNode:
 		# Left heavy
 		if balance > 1:
 			if node.get_left().get_balance_val() < 0:
-				node.set_left(self.left_rotate(node.get_left()))  # LR case
-			return self.right_rotate(node)  # LL case
+				node.set_left(self.left_rotate(node.get_left()))
+			return self.right_rotate(node)
 
 		# Right heavy
 		if balance < -1:
 			if node.get_right().get_balance_val() > 0:
-				node.set_right(self.right_rotate(node.get_right()))  # RL case
-			return self.left_rotate(node)  # RR case
+				node.set_right(self.right_rotate(node.get_right()))
+			return self.left_rotate(node)
 
 		return node
 
@@ -104,14 +104,13 @@ class AVLTree:
 	def print_tree(self, node : AVLNode, level = 0):
 		if node is not None:
 			self.print_tree(node.get_right(), level + 1)
-			print('    ' * level + str(node.get_data()))
+			print('     ' * level + ' ' +str(node.get_data()))
 			self.print_tree(node.get_left(), level + 1)
 
 
 class Solution:
 
 	def find_maximum_sum_path(self, root: AVLNode):
-		# returns (max_sum, path_list)
 		if root is None:
 			return (0, [])
 

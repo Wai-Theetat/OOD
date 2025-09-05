@@ -27,10 +27,27 @@ class AVLTree:
 	def _remove(self, node, movieName):
 		if not node:
 			return node
-		###
-		### Let you cook
-		###
-		pass
+
+		#Base Case
+		if node.data.title == movieName:
+			if not node.left:
+				return node.right
+			elif not node.right:
+				return node.left
+
+			#Tried to replace with loweset possible
+			else:
+				successor = self.getMin(node.right)
+				node.data = successor.data
+				node.right = self._remove(node.right, successor.data.title)
+		else:
+			#Traverse
+			node.left  = self._remove(node.left, movieName)
+			node.right = self._remove(node.right, movieName)
+
+		node.setHeight()
+		return self.balance(node)
+
 
 	def top(self, number):
 		return self._top(self.root, number)
@@ -38,10 +55,19 @@ class AVLTree:
 	def _top(self, node, number):
 		if node is None or number == 0:
 			return []
-		##
-		### Let you cook
-		##
-		pass
+		
+		result = []
+
+		#rightest = most rate
+		if node.right:
+			result += self._top(node.right, number)
+		if len(result) < number:
+			result.append(node.data)
+   
+		if len(result) < number and node.left:
+			result += self._top(node.left, number - len(result))
+
+		return result[:number]
 
 	def getRatingRange(self, start, end):
 		return self._getRatingRange(self.root, start, end)
@@ -49,10 +75,20 @@ class AVLTree:
 	def _getRatingRange(self, node, start, end):
 		if node is None:
 			return []
-		###
-		### Let you cook
-		###
-		pass
+	
+		result = []
+    
+		if node.left and node.data.rating > start:
+			result += self._getRatingRange(node.left, start, end)
+		
+		if start <= node.data.rating <= end:
+			result.append(node.data)
+		
+		if node.right and node.data.rating < end:
+			result += self._getRatingRange(node.right, start, end)
+		
+		return result
+
 
 	def balance(self, node):
 		node.setHeight()
@@ -76,8 +112,6 @@ class AVLTree:
 
 		# Balanced
 		return node
-
-
 
 	def getMin(self, node):  # Get minimum rating node
 		current = node

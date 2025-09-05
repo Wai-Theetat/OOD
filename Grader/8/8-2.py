@@ -34,31 +34,34 @@ class AVLNode:
 			return 0
 		return 1 + self.get_size(node.get_left()) + self.get_size(node.get_right())
 
-	def left_rotate(self, x: 'AVLNode') -> 'AVLNode':
-		y = x.get_right()
-		T2 = y.get_left() if y else None
+	def left_rotate(self, root: 'AVLNode') -> 'AVLNode':
+		pivot = root.get_right()
+		left_subtree_of_pivot = pivot.get_left() if pivot else None
 
-		x.set_right(T2)
-		if y:
-			y.set_left(x)
+		root.set_right(left_subtree_of_pivot)
+		if pivot:
+			pivot.set_left(root)
 
-		x.set_height()
-		if y:
-			y.set_height()
-		return y if y is not None else x
+		root.set_height()
+		if pivot:
+			pivot.set_height()
 
-	def right_rotate(self, x: 'AVLNode') -> 'AVLNode':
-		y = x.get_left()
-		T2 = y.get_right() if y else None
+		return pivot if pivot else root
 
-		x.set_left(T2)
-		if y:
-			y.set_right(x)
 
-		x.set_height()
-		if y:
-			y.set_height()
-		return y if y is not None else x
+	def right_rotate(self, root: 'AVLNode') -> 'AVLNode':
+		pivot = root.get_left()
+		right_subtree_of_pivot = pivot.get_right() if pivot else None
+
+		root.set_left(right_subtree_of_pivot)
+		if pivot:
+			pivot.set_right(root)
+
+		root.set_height()
+		if pivot:
+			pivot.set_height()
+
+		return pivot if pivot else root
 
 	def rebalance(self, node: 'AVLNode') -> 'AVLNode':
 		if node is None:

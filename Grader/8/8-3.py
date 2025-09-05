@@ -29,11 +29,6 @@ class AVLNode:
 	def get_balance_val(self):
 		return self.get_height(self.__left) - self.get_height(self.__right)
 
-	def get_size(self, node=None):
-		if node is None:
-			return 0
-		return 1 + self.get_size(node.get_left()) + self.get_size(node.get_right())
-
 	def left_rotate(self, x: 'AVLNode') -> 'AVLNode':
 		y = x.get_right()
 		T2 = y.get_left() if y else None
@@ -107,16 +102,39 @@ class AVLTree:
 		return root_node.rebalance(root_node)
 
 	def print_tree(self, node : AVLNode, level = 0):
-			if node != None:
-				self.print_tree(node.get_right(), level + 1)
-				print('    ' * level + str(node.get_data()))
-				self.print_tree(node.get_left(), level + 1)
-    
+		if node is not None:
+			self.print_tree(node.get_right(), level + 1)
+			print('    ' * level + str(node.get_data()))
+			self.print_tree(node.get_left(), level + 1)
+
 
 class Solution:
-	def main(self):
-		pass
 
+	def find_maximum_sum_path(self, root: AVLNode):
+		# returns (max_sum, path_list)
+		if root is None:
+			return (0, [])
+
+		left_sum, left_path = self.find_maximum_sum_path(root.get_left())
+		right_sum, right_path = self.find_maximum_sum_path(root.get_right())
+
+		if left_sum > right_sum:
+			return (left_sum + root.get_data(), [root.get_data()] + left_path)
+		else:
+			return (right_sum + root.get_data(), [root.get_data()] + right_path)
+
+	def main(self):
+		apples = list(map(int, input("Enter tree nodes: ").split()))
+
+		tree = AVLTree()
+		for a in apples:
+			tree.add(a)
+
+		tree.print_tree(tree.get_root())
+		print()
+
+		max_sum, path = self.find_maximum_sum_path(tree.get_root())
+		print("Path with maximum sum: " + " + ".join(map(str, path)) + f" = {max_sum}")
 
 
 sol = Solution()

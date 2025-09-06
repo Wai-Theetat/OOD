@@ -131,7 +131,7 @@ class Solution:
 	def find_k_smallest(self, node : AVLNode, k_target):
 		if node is None : return None
 		left_size = node.get_size(node.get_left())
-  
+
 		if k_target == left_size + 1:
 			return node.get_data()
 		elif k_target <= left_size:

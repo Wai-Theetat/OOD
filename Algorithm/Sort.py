@@ -54,11 +54,50 @@ class SortAlgorithm:
 	def HeapSort(data : list):
 		pass
 
-	def MergeSort(data : list):
-		pass
+	def MergeSort(data: list):
+		def merge(left, right):
+			result = []
+			i = j = 0
+			while i < len(left) and j < len(right):
+				if left[i] <= right[j]:
+					result.append(left[i])
+					i += 1
+				else:
+					result.append(right[j])
+					j += 1
+			result.extend(left[i:])
+			result.extend(right[j:])
+			return result
 
-	def QuickSort(data : list):
-		pass
+		if len(data) <= 1:
+			return data
+		mid = len(data) // 2
+		left = SortAlgorithm.MergeSort(data[:mid])
+		right = SortAlgorithm.MergeSort(data[mid:])
+		return merge(left, right)
+
+	def QuickSort(data: list):
+		def _think(arr, low, high):
+			if low < high:
+				# Partition the array
+				pi = partition(arr, low, high)
+				# Recursively sort left and right halves
+				_think(arr, low, pi - 1)
+				_think(arr, pi + 1, high)
+			return arr
+
+		def partition(arr, low, high):
+			pivot = arr[high]  # last element as pivot
+			i = low - 1
+			for j in range(low, high):
+				if arr[j] <= pivot:
+					i += 1
+					arr[i], arr[j] = arr[j], arr[i]
+			arr[i + 1], arr[high] = arr[high], arr[i + 1]
+			return i + 1
+			
+		if data is None: return None
+		return _think(data.copy(), 0, len(data) - 1)
 
 
 my_data = [32,26,2,15,264,-183,10,0,20,-142,-1]
@@ -67,6 +106,6 @@ print(f"Bubble Sort\t{SortAlgorithm.BubbleSort(my_data)}")
 print(f"Selection Sort\t{SortAlgorithm.SelectionSort(my_data)}")	
 print(f"Insertion Sort\t{SortAlgorithm.InsertionSort(my_data)}")
 print(f"ShellSort Sort\t{SortAlgorithm.ShellSort(my_data, [1, 8, 23])}")
-print(f"Heap Sort\t{SortAlgorithm.HeapSort(my_data)}")
-print(f"Merge Sort\t{SortAlgorithm.MergeSort(my_data)}")
+#print(f"Heap Sort\t{SortAlgorithm.HeapSort(my_data)}")
+#print(f"Merge Sort\t{SortAlgorithm.MergeSort(my_data)}")
 print(f"Quick Sort\t{SortAlgorithm.QuickSort(my_data)}")

@@ -55,7 +55,7 @@ class BPTreeNode:
     def remove_child_at(self, index):
         return self.__children.pop(index)
 
-    # -------- Utility Methods --------
+    # Utils
     def is_leaf(self) -> bool:
         return False  # overridden in Leaf subclass
     

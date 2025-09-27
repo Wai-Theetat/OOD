@@ -1,0 +1,52 @@
+=== B+ Tree Test ===
+
+Insert (5, A)
+Level 0: [5] -> 
+Leaves horizontal:
+Leaf chain: [5] -> None
+
+Insert (10, B)
+Level 0: [5,10] -> 
+Leaves horizontal:
+Leaf chain: [5,10] -> None
+
+Insert (15, C)
+Level 0: [5,10,15] -> 
+Leaves horizontal:
+Leaf chain: [5,10,15] -> None
+
+Insert (20, D)
+Level 0: (15) 
+Level 1: [5,10] -> [15,20] -> 
+Leaves horizontal:
+Leaf chain: [5,10] -> [15,20] -> None
+
+Insert (25, E)
+Level 0: (15) 
+Level 1: [5,10] -> [15,20,25] -> 
+Leaves horizontal:
+Leaf chain: [5,10] -> [15,20,25] -> None
+
+Insert (30, F)
+Level 0: (15,25) 
+Level 1: [5,10] -> [15,20] -> [25,30] -> 
+Leaves horizontal:
+Leaf chain: [5,10] -> [15,20] -> [25,30] -> None
+
+Insert (3, G)
+Level 0: (15,25) 
+Level 1: [3,5,10] -> [15,20] -> [25,30] -> 
+Leaves horizontal:
+Leaf chain: [3,5,10] -> [15,20] -> [25,30] -> None
+
+Insert (8, H)
+Level 0: (8,15,25) 
+Level 1: [3,5] -> [8,10] -> [15,20] -> [25,30] -> 
+Leaves horizontal:
+Leaf chain: [3,5] -> [8,10] -> [15,20] -> [25,30] -> None
+
+=== Search Test ===
+Search 5: A
+Search 15: C
+Search 25: E
+Search 100: None

@@ -128,10 +128,9 @@ class BPTree:
         leaf.insert_key_at(i, key)
         leaf.insert_child_at(i, value)
 
-    # Split a leaf node
     def __split_leaf(self, leaf: BPTreeLeafNode):
         order = leaf.get_order()
-        mid = len(leaf.get_keys()) // 2
+        mid = leaf.get_keys_size()//2
 
         # Create new right leaf
         new_leaf = BPTreeLeafNode(order)
@@ -147,6 +146,7 @@ class BPTree:
         # Promote first key of new leaf
         promote_key = new_leaf.get_key_at(0)
         self.__insert_in_parent(leaf, promote_key, new_leaf)
+
 
     # Recursive parent insertion
     def __insert_in_parent(self, node, key, new_node):
@@ -193,6 +193,29 @@ class BPTree:
 
         self.__insert_in_parent(node, promote_key, new_node)
 
+
+    #Deletion
+    def delete(self, key):
+        leaf = self.__find_leaf(key)
+        
+        try:
+            idx = leaf.get_keys().index(key)
+        except ValueError:
+            return # Key not found
+
+        # Remove key and Values
+        leaf.remove_key_at(idx)
+        leaf.remove_child_at(idx)
+
+        # Underflow - size go lower than min
+        if leaf != self.__root and leaf.get_keys_size() < (self.__order + 1)//2:
+            self.__rebalance(leaf)
+
+
+    def __rebalance(self, node: BPTreeNode):
+        pass
+
+
     # Search
     def search(self, key):
         leaf = self.__find_leaf(key)
@@ -203,7 +226,7 @@ class BPTree:
 
     # Display --For Debugging
     def display_tree_ascii(self):
-        from collections import deque
+        from collections import deque           #Go make dequeue plz This just for debugging.
         if self.__root is None:
             print("Empty tree")
             return

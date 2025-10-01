@@ -1,45 +1,54 @@
 class Solution:
 	def main(self):
-		raw_nums, target  = input("Enter Input:").split('/')
-        
-		target		= float(target)
-		nums		= list(map(float,raw_nums.split()))
-		index		= 0
-		percentile	= 0
+		raw_nums, target = input("Enter Input : ").split('/')
+		nums = list(map(float, raw_nums.strip().split()))
+		target = float(target)
+		n = len(nums)
 
-		if self.is_sorted(nums):
+		if not self.is_sorted(nums):
+			return
 
-			if target > nums[len(nums)-1] : target = nums[len(nums)-1]
-			elif target < nums[0]		  : target = nums[0]
+		if target < nums[0]:
+			index = -1
+			percentile = 0
+		elif target > nums[-1]:
+			index = 999
+			percentile = 100
+		else:
+			index = self.binary_search_with_fraction(nums, target)
+			percentile = (index + 1) * 100 / n
 
 
-			index		= self.binary_search(nums, target)
-			percentile	= 0 
+		if index == len(nums)-1: percentile = int(percentile)
 
 
+		print(f"\nindex      :   {index}")
+		print(f"percentile :   {percentile}")
 
 	def is_sorted(self, nums):
-		if nums is None : return False
-		a = nums[0]
-		for n in nums:
-			if n > a: return False
-		return True
+		return all(nums[i] <= nums[i+1] for i in range(len(nums) - 1))
 
-	def binary_search(self, nums, target):
+	def binary_search_with_fraction(self, nums, target):
 		left = 0
-		right = len(nums)-1
+		right = len(nums) - 1
 
 		while left <= right:
-			mid = (left + right)//2
-
+			mid = (left + right) // 2
 			if nums[mid] == target:
-				return mid
-			
-			if nums[mid] <= target:
+				return float(mid)
+			elif nums[mid] < target:
 				left = mid + 1
 			else:
 				right = mid - 1
-		return -1
 
-sol = Solution();
+		lower_index = right
+		upper_index = left
+		low_val = nums[lower_index]
+		high_val = nums[upper_index]
+		decimal = (target - low_val) / (high_val - low_val)
+		# index = (high_val - low_val) * decimal + lower_index
+		index = lower_index + decimal
+		return index
+
+sol = Solution()
 sol.main()

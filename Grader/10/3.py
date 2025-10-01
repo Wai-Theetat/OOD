@@ -2,30 +2,52 @@ class Data:
 	def __init__(self, key, value):
 		self.key = key
 		self.value = value
+
 	def __str__(self):
-		return "({0}, {1})".format(self.key, self.value)
+		return f"({self.key}, {self.value})"
 
 class Solution:
 	def main(self):
 		print(" ***** Fun with hashing *****")
 		raw_value, raw_data = input("Enter Input : ").split('/')
 
-		hash_table		= []
-		max_t_size		= int(raw_value.split()[0])
-		max_chain_c		= int(raw_value.split()[1])
-		full_data		= []
+		table_size, max_collision = map(int, raw_value.strip().split())
+		data_list = [tuple(item.strip().split()) for item in raw_data.strip().split(',')]
 
-		for data in raw_data.split(','):
-			full_data.append(Data(data.split()[0], data.split()[1]))
-			# print(full_data[len(full_data)-1])
+		table = [None] * table_size
+		full_warning_printed = False
 
-		for _ in range(0, max_t_size) : hash_table.append(None)
+		for key, value in data_list:
+			data = Data(key, value)
+			hashed = self.hashing(key, table_size)
+			inserted = False
 
-		i = 0
-		while full_data or max_t_size:
-			before_hash = full_data[i].key
-			hashed		= self.hashing(before_hash)
+			for i in range(max_collision):
+				index = (hashed + i ** 2) % table_size
 
+				if table[index] is None:
+					table[index] = data
+					inserted = True
+					break
+				else:
+					print(f"collision number {i+1} at {index}")
+
+			if not inserted:
+				print("Max of collisionChain")
+			
+			self.print_table(table)
+
+			if not full_warning_printed and all(slot is not None for slot in table):
+				print("This table is full !!!!!!")
+				full_warning_printed = True
+
+	def hashing(self, key, size):
+		return sum(ord(ch) for ch in key) % size
+
+	def print_table(self, table):
+		for i, item in enumerate(table):
+			print(f"# {i+1}\t{item if item else 'None'}")
+		print("---------------------------")
 
 sol = Solution()
 sol.main()
